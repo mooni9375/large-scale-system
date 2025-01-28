@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import mooni.board.article.service.ArticleService;
 import mooni.board.article.service.request.ArticleCreateRequest;
 import mooni.board.article.service.request.ArticleUpdateRequest;
+import mooni.board.article.service.response.ArticlePageResponse;
 import mooni.board.article.service.response.ArticleResponse;
+import org.hibernate.query.criteria.JpaConflictUpdateAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +22,17 @@ public class ArticleController {
 //    }
 
     @GetMapping("/v1/articles/{articleId}")
-    public ArticleResponse getArticle(@PathVariable Long articleId) {
+    public ArticleResponse read(@PathVariable Long articleId) {
         return articleService.read(articleId);
+    }
+
+    @GetMapping("/v1/articles")
+    public ArticlePageResponse readAll(
+            @RequestParam("boardId") Long boardId,
+            @RequestParam("page") Long page,
+            @RequestParam("pageSize") Long pageSize
+    ) {
+        return articleService.readAll(boardId, page, pageSize);
     }
 
     @PostMapping("/v1/articles")
