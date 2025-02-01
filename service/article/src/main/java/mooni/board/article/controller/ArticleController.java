@@ -1,5 +1,6 @@
 package mooni.board.article.controller;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import mooni.board.article.service.ArticleService;
 import mooni.board.article.service.request.ArticleCreateRequest;
@@ -9,6 +10,8 @@ import mooni.board.article.service.response.ArticleResponse;
 import org.hibernate.query.criteria.JpaConflictUpdateAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,13 +38,23 @@ public class ArticleController {
         return articleService.readAll(boardId, page, pageSize);
     }
 
+    @GetMapping("v1/articles/infinite-scroll")
+    public List<ArticleResponse> readAllInfiniteScroll(
+            @RequestParam("boardId") Long boardId,
+            @RequestParam("pageSize") Long pageSize,
+            @RequestParam(value = "lastArticleId", required = false) Long lastArticleId
+    ) {
+        return articleService.readAllInfiniteScroll(boardId, pageSize, lastArticleId);
+    }
+
     @PostMapping("/v1/articles")
     public ArticleResponse create(@RequestBody ArticleCreateRequest request) {
         return articleService.create(request);
     }
 
     @PutMapping("/v1/articles/{articleId}")
-    public ArticleResponse update(@PathVariable Long articleId, @RequestBody ArticleUpdateRequest request) {
+    public ArticleResponse update(@PathVariable Long articleId,
+                                  @RequestBody ArticleUpdateRequest request) {
         return articleService.update(articleId, request);
     }
 

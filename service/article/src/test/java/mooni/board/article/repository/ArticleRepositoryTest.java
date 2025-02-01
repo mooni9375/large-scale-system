@@ -5,6 +5,7 @@ import mooni.board.article.entity.Article;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.context.request.AsyncWebRequestInterceptor;
 
 import java.util.List;
 
@@ -15,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class ArticleRepositoryTest {
 
     ArticleRepository articleRepository;
+    @Autowired
+    private AsyncWebRequestInterceptor asyncWebRequestInterceptor;
 
     @Autowired
     public ArticleRepositoryTest(ArticleRepository articleRepository) {
@@ -34,5 +37,19 @@ class ArticleRepositoryTest {
     void countTest() {
         Long count = articleRepository.count(1L, 10000L);
         log.info("count: {}", count);
+    }
+
+    @Test
+    void findInfiniteScrollTest() {
+        List<Article> articles = articleRepository.findAllInfiniteScroll(1L, 30L);
+        for (Article article : articles) {
+            log.info("articleId = {}", article.getArticleId());
+        }
+
+        Long lastArticle = articles.getLast().getArticleId();
+        articleRepository.findAllInfiniteScroll(1L, 30L, lastArticle);
+        for (Article article : articles) {
+            log.info("articleId = {}", article.getArticleId());
+        }
     }
 }
