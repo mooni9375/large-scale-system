@@ -12,7 +12,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @GetMapping("/v1/comments/{commnetId}")
+    @GetMapping("/v1/comments/{commentId}")
     public CommentResponse read(
             @PathVariable("commentId") Long commentId
     ) {
