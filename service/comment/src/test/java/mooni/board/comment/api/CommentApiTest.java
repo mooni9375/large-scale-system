@@ -58,7 +58,7 @@ public class CommentApiTest {
     @Test
     void readAll() {
         CommentPageResponse response = restClient.get()
-                .uri("/v1/comments?articleId=1&page=1&pageSize=10")
+                .uri("/v1/comments?articleId=1&page=20000&pageSize=10")
                 .retrieve()
                 .body(CommentPageResponse.class);
 
