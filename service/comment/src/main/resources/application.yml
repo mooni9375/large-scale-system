@@ -11,6 +11,6 @@ spring:
     password: root
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
-    show-sql: false
+    show-sql: true
     hibernate:
       ddl-auto: none
