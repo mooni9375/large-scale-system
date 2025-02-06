@@ -2,9 +2,11 @@ package mooni.board.comment.service;
 
 import kuke.board.common.snowflake.Snowflake;
 import lombok.RequiredArgsConstructor;
+import mooni.board.comment.entity.ArticleCommentCount;
 import mooni.board.comment.entity.Comment;
 import mooni.board.comment.entity.CommentPath;
 import mooni.board.comment.entity.CommentV2;
+import mooni.board.comment.repository.ArticleCommentCountRepository;
 import mooni.board.comment.repository.CommentRepositoryV2;
 import mooni.board.comment.service.request.CommentCreateRequestV2;
 import mooni.board.comment.service.response.CommentPageResponse;
@@ -23,6 +25,7 @@ public class CommentServiceV2 {
     private final Snowflake snowflake = new Snowflake();
     private final CommentRepositoryV2 repositoryV2;
     private final CommentRepositoryV2 commentRepository;
+    private final ArticleCommentCountRepository articleCommentCountRepository;
 
     @Transactional
     public CommentResponse create(CommentCreateRequestV2 request) {
@@ -41,6 +44,13 @@ public class CommentServiceV2 {
                         )
                 )
         );
+
+        int result = articleCommentCountRepository.increase(comment.getArticleId());
+        if (result == 0) {
+            articleCommentCountRepository.save(
+                    ArticleCommentCount.init(request.getArticleId(), 1L)
+            );
+        }
 
         return CommentResponse.from(comment);
     }
@@ -66,12 +76,19 @@ public class CommentServiceV2 {
     @Transactional
     public void delete(Long commentId) {
         commentRepository.findById(commentId)
-                .filter(not(CommentV2::getDeleted))
+                .filter(not(CommentV2::getDeleted)) // 삭제되지 않은 경우
                 .ifPresent(comment -> {
-                    if (hasChildren(comment)) {
-                        comment.delete();
+
+                    boolean resultOfHasChildren = hasChildren(comment);
+                    System.out.println("%%%%% resultOfHasChildren :: >> " + resultOfHasChildren);
+
+                    // 자식이 있으면
+                    if (resultOfHasChildren) {
+                        comment.delete();   // 상태만 변경
+
+                    // 자식이 없으면
                     } else {
-                        delete(comment);
+                        delete(comment);    // 실제 삭제
                     }
                 });
     }
@@ -79,13 +96,14 @@ public class CommentServiceV2 {
     private boolean hasChildren(CommentV2 comment) {
         return commentRepository.findDescendantsTopPath(
                 comment.getArticleId(),
-                comment.getCommentPath().getParentPath()
+                comment.getCommentPath().getPath()
         ).isPresent();
     }
 
     private void delete(CommentV2 comment) {
 
         commentRepository.delete(comment);
+        articleCommentCountRepository.decrease(comment.getArticleId());
 
         if (!comment.isRoot()) {
             commentRepository.findByPath(comment.getCommentPath().getParentPath())
@@ -114,5 +132,10 @@ public class CommentServiceV2 {
                 .toList();
     }
 
+    public Long count(Long articleId) {
+        return articleCommentCountRepository.findById(articleId)
+                .map(ArticleCommentCount::getCommentCount)
+                .orElse(0L);
+    }
 
 }

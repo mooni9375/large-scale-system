@@ -51,6 +51,8 @@ public class CommentPath {
     }
 
     public String getParentPath() {
+        System.out.println("@@@@@ path :: >> " + path);
+        System.out.println("@@@@@ return :: >> " + path.substring(0, path.length() - DEPTH_CHUNK_SIZE));
         // 끝 5자리 제거
         return path.substring(0, path.length() - DEPTH_CHUNK_SIZE);
     }
