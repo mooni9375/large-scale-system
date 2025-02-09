@@ -1,6 +1,5 @@
 package mooni.board.comment.repository;
 
-import kuke.board.common.snowflake.Snowflake;
 import mooni.board.comment.entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

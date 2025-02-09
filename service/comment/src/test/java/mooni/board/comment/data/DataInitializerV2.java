@@ -2,8 +2,7 @@ package mooni.board.comment.data;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import kuke.board.common.snowflake.Snowflake;
-import mooni.board.comment.entity.Comment;
+import mooni.board.common.snowflake.Snowflake;
 import mooni.board.comment.entity.CommentPath;
 import mooni.board.comment.entity.CommentV2;
 import org.junit.jupiter.api.Test;

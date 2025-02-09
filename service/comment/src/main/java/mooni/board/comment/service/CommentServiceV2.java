@@ -1,9 +1,8 @@
 package mooni.board.comment.service;
 
-import kuke.board.common.snowflake.Snowflake;
+import mooni.board.common.snowflake.Snowflake;
 import lombok.RequiredArgsConstructor;
 import mooni.board.comment.entity.ArticleCommentCount;
-import mooni.board.comment.entity.Comment;
 import mooni.board.comment.entity.CommentPath;
 import mooni.board.comment.entity.CommentV2;
 import mooni.board.comment.repository.ArticleCommentCountRepository;

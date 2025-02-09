@@ -1,6 +1,6 @@
 package mooni.board.like.service;
 
-import kuke.board.common.snowflake.Snowflake;
+import mooni.board.common.snowflake.Snowflake;
 import lombok.RequiredArgsConstructor;
 import mooni.board.like.entity.ArticleLike;
 import mooni.board.like.entity.ArticleLikeCount;

@@ -1,6 +1,6 @@
 package mooni.board.article.service;
 
-import kuke.board.common.snowflake.Snowflake;
+import mooni.board.common.snowflake.Snowflake;
 import lombok.RequiredArgsConstructor;
 import mooni.board.article.entity.Article;
 import mooni.board.article.entity.BoardArticleCount;
@@ -10,13 +10,10 @@ import mooni.board.article.service.request.ArticleCreateRequest;
 import mooni.board.article.service.request.ArticleUpdateRequest;
 import mooni.board.article.service.response.ArticlePageResponse;
 import mooni.board.article.service.response.ArticleResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
