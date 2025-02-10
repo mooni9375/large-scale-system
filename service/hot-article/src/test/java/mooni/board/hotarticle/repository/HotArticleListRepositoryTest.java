@@ -37,7 +37,7 @@ class HotArticleListRepositoryTest {
         assertThat(articleIds).hasSize(Long.valueOf(limit).intValue());
         assertThat(articleIds.get(0)).isEqualTo(4);
         assertThat(articleIds.get(1)).isEqualTo(5);
-        assertThat(articleIds.get(2)).isEqualTo(2); 
+        assertThat(articleIds.get(2)).isEqualTo(2);
 
         TimeUnit.SECONDS.sleep(5);
 
