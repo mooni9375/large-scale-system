@@ -42,6 +42,6 @@ public class ArticleClient {
     public static class ArticleResponse {
         private Long articleId;
         private String title;
-        private LocalDateTime createTime;
+        private LocalDateTime createdAt;
     }
 }
