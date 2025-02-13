@@ -20,7 +20,8 @@ import java.util.Objects;
 public class HotArticleService {
 
     private final ArticleClient articleClient;
-    private final List<EventHandler> eventHandlers; // List : EventHandler 내의 모든 의존성이 주입 됨
+    // EventHandler를 구현한 모든 빈(@Component, @Service...)에 대해 의존성 주입
+    private final List<EventHandler> eventHandlers;
     private final HotArticleScoreUpdater hotArticleScoreUpdater;
     private final HotArticleListRepository hotArticleListRepository;
 
@@ -40,17 +41,21 @@ public class HotArticleService {
 
         } else {
 
-            // 3_2. 생성 or 삭제 이벤트가 아니라면 인기글 update
+            // 3_2. 생성 or 삭제 이벤트가 아니라면 인기글 update (updater에서 redis를 통해 메모리에 적재)
             hotArticleScoreUpdater.update(event, eventHandler);
         }
 
     }
 
+    /**
+     *  filter : Returns a stream consisting of the results of applying the given function to the elements of this stream.
+     *  findAny : RReturns an Optional describing some element of the stream, or an empty Optional if the stream is empty.
+     */
     private EventHandler<EventPayload> findEventHandler(Event<EventPayload> event) {
         return eventHandlers.stream()
                 .filter(eventHandler -> eventHandler.supports(event))
                 .findAny()
-                .orElseGet(null);
+                .orElse(null);
     }
 
     private boolean isArticleCreatedOrDeleted(Event<EventPayload> event) {
@@ -58,7 +63,7 @@ public class HotArticleService {
 
     }
 
-    private List<HotArticleResponse> readAll(String dateStr) {
+    public List<HotArticleResponse> readAll(String dateStr) {
 
         // yyyyMMdd
         return hotArticleListRepository.readAll(dateStr).stream()

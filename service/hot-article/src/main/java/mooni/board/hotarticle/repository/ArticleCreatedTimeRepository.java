@@ -18,6 +18,14 @@ public class ArticleCreatedTimeRepository {
     // hot-article::article::{articleId}::created-time
     private static final String KEY_FORMAT = "hot-article::article::%s::created-time";
 
+    /**
+     * StringRedisTemplate.opsForValue().set()
+     *  실행됨으로써 메모리에 데이터가 적재 됨 (ops = operations)
+     *
+     * 데이터 타입(String, List, Set, Hash, ZSet)에 따라 opsForValue(), opsForList(), opsForSet() 사용
+     *
+     * opsForValue().set(key, value, timeout, timeUnit)
+     */
     public void createOrUpdate(Long articleId, LocalDateTime createdAt, Duration ttl) {
         redisTemplate.opsForValue().set(
                 generateKey(articleId),
