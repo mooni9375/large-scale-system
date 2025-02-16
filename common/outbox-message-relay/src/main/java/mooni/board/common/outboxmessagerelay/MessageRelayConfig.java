@@ -34,6 +34,7 @@ public class MessageRelayConfig {
     public KafkaTemplate<String, String> messageRelayKafkaTemplate() {
 
         Map<String, Object> configProps = new HashMap<>();
+
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -45,6 +46,8 @@ public class MessageRelayConfig {
     // 트랜잭션이 끝날 때마다 비동기로 이벤트를 전송하는 역할
     @Bean
     public Executor messageRelayPublishEventExecutor() {
+
+        // 쓰레드 풀 생성
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 
         executor.setCorePoolSize(20);

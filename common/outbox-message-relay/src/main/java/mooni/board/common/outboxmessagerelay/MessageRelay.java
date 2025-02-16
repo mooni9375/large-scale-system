@@ -27,7 +27,7 @@ public class MessageRelay {
 
     /**
      * @ TransactionalEventListener
-     * 트랜잭션에 대한 이벤트를 받을 수 있음.
+     *  트랜잭션에 대한 이벤트를 받을 수 있음.
      */
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void createOutbox(OutboxEvent outboxEvent) {
@@ -42,8 +42,8 @@ public class MessageRelay {
     }
 
     private void publishEvent(Outbox outbox) {
-        try {
 
+        try {
             messageRelayKafkaTemplate.send(
                     outbox.getEventType().getTopic(),
                     String.valueOf(outbox.getShardKey()),
@@ -65,11 +65,12 @@ public class MessageRelay {
             scheduler = "messageRelayPublishPendingEventExecutor"
     )
     public void publishPendingEvent() {
+
         AssignedShard assignedShard = messageRelayCoordinator.assignedShards();
         log.info("[MessageRelay.publishPendingEvent] assignedShard size = {}", assignedShard.getShards().size());
 
         for (Long shard : assignedShard.getShards()) {
-            List<Outbox> outboxes = outboxRepository.findAllByShardKeyAndCreatedAtLessThanEqualOrderByCreatedAtDesc(
+            List<Outbox> outboxes = outboxRepository.findAllByShardKeyAndCreatedAtLessThanEqualOrderByCreatedAtAsc(
                     shard,
                     LocalDateTime.now().minusSeconds(10),
                     Pageable.ofSize(100)

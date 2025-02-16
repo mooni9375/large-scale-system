@@ -26,6 +26,7 @@ public class MessageRelayCoordinator {
 
     private final String APP_ID = UUID.randomUUID().toString();
 
+    // 3초 간격으로 조회 & 3회 실패시 애플리케이션이 죽었다고 판단
     private final int PING_INTERVAL_SECONDS = 3;
     private final int PING_FAILURE_THRESHOLD = 3;
 

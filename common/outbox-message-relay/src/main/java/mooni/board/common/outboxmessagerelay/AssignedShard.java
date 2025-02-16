@@ -8,6 +8,7 @@ import java.util.stream.LongStream;
 @Getter
 public class AssignedShard {
 
+    // 애플리케이션에 할당된 샤드
     private List<Long> shards;
 
     public static AssignedShard of(String appId, List<String> appIds, long shardCount) {
@@ -23,6 +24,7 @@ public class AssignedShard {
 
         int appIndex = findAppIndex(appId, appIds);
 
+        // 할당할 샤드가 없으면 빈 배열 반환
         if (appIndex == -1) {
             return List.of();
         }
