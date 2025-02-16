@@ -17,7 +17,7 @@ public class ArticleClient {
 
     private RestClient restClient;
 
-    @Value("{endpoints.mooni-board-article-service.url}")
+    @Value("${endpoints.mooni-board-article-service.url}")
     private String articleServiceUrl;
 
     @PostConstruct
@@ -32,7 +32,7 @@ public class ArticleClient {
                     .retrieve()
                     .body(ArticleResponse.class);
         } catch (Exception e) {
-            log.error("[ArticleClient.read] articleId = {}", articleId);
+            log.error("[ArticleClient.read] articleId = {}", articleId, e);
         }
         return null;
     }
