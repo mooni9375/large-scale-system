@@ -45,7 +45,7 @@ public class ArticleReadService {
                 .orElseThrow();
 
         return ArticleReadResponse.from(
-            articleQueryModel,
+                articleQueryModel,
                 viewClient.count(articleId)
         );
     }
