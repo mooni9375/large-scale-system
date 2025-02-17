@@ -18,13 +18,13 @@ import java.util.concurrent.Executors;
 
 /**
  * @EnableAsync
- *  transaction 종료 후 kafka 이벤트 전송을 비동기로 처리하기 위함
+ *  transaction 종료 후 kafka 이벤트 전송을 비동기로 처리하기 위함.
  * @EnableScheduling
- *  전송되지 않은 메시지들을 주기적으로 kafka로 보내기 위함
+ *  전송되지 않은 메시지들을 주기적으로 kafka로 보내기 위함.
  */
 @EnableAsync
-@ComponentScan("mooni.board.common.outboxmessagerelay")
 @EnableScheduling
+@ComponentScan("mooni.board.common.outboxmessagerelay")
 public class MessageRelayConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
@@ -43,11 +43,11 @@ public class MessageRelayConfig {
         return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(configProps));
     }
 
-    // 트랜잭션이 끝날 때마다 비동기로 이벤트를 전송하는 역할
+    // 트랜잭션이 끝날 때마다 kafka 이벤트를 비동기로 전송하기 위한 스레드 풀 설정
     @Bean
     public Executor messageRelayPublishEventExecutor() {
 
-        // 쓰레드 풀 생성
+        // 스레드 풀 생성
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 
         executor.setCorePoolSize(20);
@@ -58,9 +58,14 @@ public class MessageRelayConfig {
         return executor;
     }
 
-    // 아직 전송되지 않은 이벤트(10초 경과 건)를 주기적으로 전송하는 역할
+    // 아직 전송되지 않은 이벤트(10초 경과 건)를 주기적으로 전송하는 역할 (단일 스레드)
     @Bean
     public Executor messageRelayPublishPendingEventExecutor() {
         return Executors.newSingleThreadScheduledExecutor();
     }
 }
+
+
+
+
+

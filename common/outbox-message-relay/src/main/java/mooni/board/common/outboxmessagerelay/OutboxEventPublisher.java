@@ -31,8 +31,5 @@ public class OutboxEventPublisher {
 
         applicationEventPublisher.publishEvent(OutboxEvent.of(outbox));
 
-
-
-
     }
 }
