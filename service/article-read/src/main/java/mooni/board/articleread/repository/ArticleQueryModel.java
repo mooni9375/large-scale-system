@@ -20,7 +20,7 @@ public class ArticleQueryModel {
     private Long articleCommentCount;
     private Long articleLikeCount;
 
-    public static ArticleQueryModel from(ArticleCreatedEventPayload payload) {
+    public static ArticleQueryModel create(ArticleCreatedEventPayload payload) {
 
         ArticleQueryModel articleQueryModel = new ArticleQueryModel();
 
