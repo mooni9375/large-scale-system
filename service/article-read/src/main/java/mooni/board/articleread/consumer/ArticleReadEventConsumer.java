@@ -23,7 +23,7 @@ public class ArticleReadEventConsumer {
             EventType.Topic.MOONI_BOARD_LIKE,
     })
     public void listen(String message, Acknowledgment ack) {
-        log.info("[ArticleReadEVentConsumer.listen] message = {}", message);
+        log.info("[ArticleReadEventConsumer.listen] message = {}", message);
 
         Event<EventPayload> event = Event.fromJson(message);
 
